@@ -8,13 +8,11 @@
    ```
 
 2. **Get API keys:**
-   - OpenAI: https://platform.openai.com/api-keys
-   - Anthropic: https://console.anthropic.com/
+   - OpenRouter: https://openrouter.ai/
 
 3. **Create `.env` file:**
    ```
-   OPENAI_API_KEY=your_openai_key
-   ANTHROPIC_API_KEY=your_anthropic_key
+   OPENROUTER_API_KEY=your-key-here
 
 ## Your Mission
 
