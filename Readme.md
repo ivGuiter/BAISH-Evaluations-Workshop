@@ -1,4 +1,4 @@
-# Behavioral Evaluation Workshop
+# BAISH Evaluations Workshop
 
 ## Setup Instructions
 
