@@ -17,22 +17,29 @@ class ModelWrapper:
         # "google/gemini-flash-1.5" - Google (cheap)
         # "qwen/qwen-2-7b-instruct" - Free!
         # "meta-llama/llama-3-8b-instruct" - Meta
-        
-        pass
+        self.client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key = os.getenv("OPENROUTER_API_KEY"))
+
     
-    def query_model(self, prompt, system_prompt="You are a helpful assistant", model="gpt-4"):
-        """
-        Send a prompt to any AI model and get back a response
-        
-        Think about:
-        - How do you make an API call?
-        - What parameters do you need?
-        - What happens when things go wrong?
-        - How do you keep responses short for the workshop?
-        """
-        # TODO: Implement the API call
-        # Hint: Use self.client.chat.completions.create()
-        pass
+    def query_model(self, prompt, system_prompt="You are a helpful assistant", model="anthropic/claude-3-haiku"):
+        try:
+            completion = self.client.chat.completions.create(
+                model = model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": system_prompt
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            )
+            print(completion.choices[0].message.content)
+        except:
+            print("Conectate al wifi pelotudo")
     
     def get_available_models(self):
         """Return a list of model names students can use"""
