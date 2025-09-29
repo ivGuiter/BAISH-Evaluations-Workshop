@@ -37,9 +37,10 @@ class ModelWrapper:
                     }
                 ]
             )
-            print(completion.choices[0].message.content)
+            return completion.choices[0].message.content
         except:
             print("Conectate al wifi pelotudo")
+        return("['0']")
     
     def get_available_models(self):
         """Return a list of model names students can use"""
