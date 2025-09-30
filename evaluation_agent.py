@@ -17,7 +17,8 @@ Think about:
 import random
 from models import ModelWrapper
 from quirky_prompts import QUIRKS, BASELINE_PROMPT
-from audit_prompt import audit_system_prompt, audit_start_prompt, audit_summarize_prompt, audit_elaborate_prompt, audit_extract_report_prompt, audit_extract_summary_prompt
+from audit_prompts import audit_system_prompt, audit_start_prompt, audit_summarize_prompt, audit_elaborate_prompt
+from misc_prompts import misc_extract_report_prompt, misc_extract_summary_prompt
 from tqdm import tqdm
 
 class SimpleEvaluationAgent:
@@ -38,6 +39,7 @@ class SimpleEvaluationAgent:
         # Hint: You might want both generic and quirk-specific prompts
         prompts_answer = self.AgentWrapper.query_model(audit_start_prompt.format(num_prompts), system_prompt=audit_system_prompt)
         return prompts_answer.splitlines()[-1].split(";")
+        
 
     def detect_quirk(self, responses, quirk_name):
         """
@@ -97,7 +99,7 @@ class SimpleEvaluationAgent:
                 f.write("\n --------------------------------------------------------- \n")
             
             # Extrae el resumen
-            summary = self.AgentWrapper.query_model(audit_extract_summary_prompt + audit_summary_answer, system_prompt=audit_system_prompt)
+            summary = self.AgentWrapper.query_model(misc_extract_summary_prompt, extra_label="input", extra_prompt=audit_summary_answer)
             with open(summary_file, "a") as f:
                 f.write(summary)
                 f.write("\n --------------------------------------------------------- \n")
@@ -109,7 +111,7 @@ class SimpleEvaluationAgent:
                 f.write("\n --------------------------------------------------------- \n")
             
             # Extrae los prompts (o el informe)
-            decision = self.AgentWrapper.query_model(audit_extract_report_prompt + audit_continuation_answer, system_prompt=audit_system_prompt)
+            decision = self.AgentWrapper.query_model(misc_extract_report_prompt + audit_continuation_answer, system_prompt=audit_system_prompt)
             print(decision)
             if decision == "REPORT DONE":
                 finished = True

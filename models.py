@@ -22,11 +22,9 @@ class ModelWrapper:
             api_key = os.getenv("OPENROUTER_API_KEY"))
 
     
-    def query_model(self, prompt, system_prompt="You are a helpful assistant", model="anthropic/claude-3-haiku"):
+    def query_model(self, prompt, system_prompt="You are a helpful assistant", extra_prompt="If you see this, something's wrong", extra_label="", model="anthropic/claude-3-haiku"):
         try:
-            completion = self.client.chat.completions.create(
-                model = model,
-                messages=[
+            messages = [
                     {
                         "role": "system",
                         "content": system_prompt
@@ -36,6 +34,11 @@ class ModelWrapper:
                         "content": prompt
                     }
                 ]
+            if extra_label:
+                messages.append({"role": extra_label, "content":extra_prompt})
+            completion = self.client.chat.completions.create(
+                model = model,
+                messages=messages
             )
             return completion.choices[0].message.content
         except:
